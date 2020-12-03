@@ -1,0 +1,45 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "grpcFileTransfer.Model";
+
+import "google/protobuf/timestamp.proto";
+
+package proto;
+
+message FileDownloadRequest{
+    string fileName = 1;
+}
+
+message FileDownloadResponse{
+    int64 fileLen = 1;
+    int32 partNum = 2;
+    int32 partLen = 3;
+    bytes data = 4;
+}
+
+message FileUploadRequest{
+    string fileName = 1;
+    int32 partCount = 2;
+    int32 partNum = 3;
+    bytes data = 4;
+}
+
+message FileUploadPart{
+    string fileName = 1;
+    int64 fileLen = 2;
+    int32 partCount = 3;
+    int32 partNum = 4;
+    bytes data = 5;
+}
+
+message FileUploadResponse{
+    int32 status = 1;
+}
+
+service FileTransfer{
+
+    rpc FileDownload(FileDownloadRequest) returns (stream FileDownloadResponse){}
+
+    rpc FileUpload(stream FileUploadPart) returns (FileUploadResponse){}
+
+}

@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30717.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleServerTest", "ConsoleServerTest\ConsoleServerTest.csproj", "{A33EB2CF-7D16-498F-823D-E0D87740E422}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "grpcFileTransfer.Server", "grpcFileTransfer.Server\grpcFileTransfer.Server.csproj", "{522696AD-676F-4E17-A4B3-87E17948E5E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "grpcFileTransfer.Client", "grpcFileTransfer.Client\grpcFileTransfer.Client.csproj", "{DBA94229-7AA9-4456-9668-5167F54A5E23}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleClientTest", "ConsoleClientTest\ConsoleClientTest.csproj", "{E7D0CE9D-9233-4AD5-8D37-1FF0786C8BFE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "grpcFileTransferTest", "grpcFileTransferTest\grpcFileTransferTest.csproj", "{B840A3FC-2FE2-4BDB-B522-CA3099724D70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "grpcFileTransfer.Model", "grpcFileTransfer.Model\grpcFileTransfer.Model.csproj", "{C94FD62A-EA82-45BB-911D-E63060DD2825}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A33EB2CF-7D16-498F-823D-E0D87740E422}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A33EB2CF-7D16-498F-823D-E0D87740E422}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A33EB2CF-7D16-498F-823D-E0D87740E422}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A33EB2CF-7D16-498F-823D-E0D87740E422}.Release|Any CPU.Build.0 = Release|Any CPU
+		{522696AD-676F-4E17-A4B3-87E17948E5E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{522696AD-676F-4E17-A4B3-87E17948E5E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{522696AD-676F-4E17-A4B3-87E17948E5E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{522696AD-676F-4E17-A4B3-87E17948E5E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBA94229-7AA9-4456-9668-5167F54A5E23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBA94229-7AA9-4456-9668-5167F54A5E23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBA94229-7AA9-4456-9668-5167F54A5E23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBA94229-7AA9-4456-9668-5167F54A5E23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7D0CE9D-9233-4AD5-8D37-1FF0786C8BFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7D0CE9D-9233-4AD5-8D37-1FF0786C8BFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7D0CE9D-9233-4AD5-8D37-1FF0786C8BFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7D0CE9D-9233-4AD5-8D37-1FF0786C8BFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B840A3FC-2FE2-4BDB-B522-CA3099724D70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B840A3FC-2FE2-4BDB-B522-CA3099724D70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B840A3FC-2FE2-4BDB-B522-CA3099724D70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B840A3FC-2FE2-4BDB-B522-CA3099724D70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C94FD62A-EA82-45BB-911D-E63060DD2825}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C94FD62A-EA82-45BB-911D-E63060DD2825}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C94FD62A-EA82-45BB-911D-E63060DD2825}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C94FD62A-EA82-45BB-911D-E63060DD2825}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B291D106-B6F6-48E8-A01D-8C1AEAC1C838}
+	EndGlobalSection
+EndGlobal
