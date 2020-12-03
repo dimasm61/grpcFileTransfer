@@ -1,2 +1,2 @@
-# grpcFileTranfer
+# grpcFileTransfer
 file transfer lib with gRPC
