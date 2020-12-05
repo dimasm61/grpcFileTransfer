@@ -18,6 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\grpcFileTransfer.Model\grpcFileTransfer.Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Protobuf Include="..\grpcFileTransfer.Model\FileTransferContract.proto" GrpcServices="Server">
       <Link>proto\FileTransferContract.proto</Link>
     </Protobuf>
