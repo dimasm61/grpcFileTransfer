@@ -8,12 +8,12 @@ namespace grpcFileTransferTest
 {
     public class TestCommon
     {
-        protected TestController TestContoller = new TestController();
+        protected TestController TestControllerItem = new TestController();
 
 
         public void Dispose()
         {
-            TestContoller.Dispose();
+            TestControllerItem.Dispose();
         }
     }
 }

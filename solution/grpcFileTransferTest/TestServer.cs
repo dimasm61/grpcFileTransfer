@@ -1,4 +1,5 @@
-﻿using Grpc.Core;
+﻿using Castle.DynamicProxy.Generators;
+using Grpc.Core;
 using grpcFileTransfer.Model;
 using grpcFileTransfer.Server;
 using Moq;
@@ -13,7 +14,7 @@ namespace grpcFileTransferTest
     public class TestServer
     {
         public IFileTransferSettingsServer SettServer;
-        public Server Server;
+        public Server ServerItem;
 
         public void Init(
               string rootPath
@@ -35,7 +36,7 @@ namespace grpcFileTransferTest
 
             var impl = getImplFunc?.Invoke(SettServer);
 
-            Server server = new Server
+            ServerItem = new Server
             {
                 Services = { FileTransfer.BindService(impl) },
                 Ports = { new ServerPort(addr, port, ServerCredentials.Insecure) }
@@ -44,12 +45,12 @@ namespace grpcFileTransferTest
 
         public void Start()
         {
-            Server.Start();
+            ServerItem.Start();
         }
 
         public void Shutdown()
         {
-            Server.ShutdownAsync().GetAwaiter().GetResult();
+            ServerItem.ShutdownAsync().GetAwaiter().GetResult(); 
         }
     }
 }

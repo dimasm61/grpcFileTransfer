@@ -14,10 +14,11 @@ namespace grpcFileTransferTest
 {
     public class TestController : IDisposable
     {
-        public static string RootCdPath = @"c:\ProgramData\FileTransferTest";
+        public static string RootProgDataPath = @"c:\ProgramData\FileTransferTest";
+        public string ClientPath;
 
-        public TestServer ServerA;
-        public TestServer ServerB;
+        public TestServer ServerA = new TestServer();
+        public TestServer ServerB = new TestServer();
 
         public string ServerAddrA;
         public string ServerAddrB;
@@ -28,32 +29,32 @@ namespace grpcFileTransferTest
 
         public void Init(
               string testFolderPrefix
-            , string addrTemplate
             , int portSrvA
             , int portSrvB
             , Func<IFileTransferSettingsServer, FileTransfer.FileTransferBase> getImplFunc
             )
         {
-            ServerA.Init(RootCdPath
+            ServerA.Init(RootProgDataPath
                 , testFolderPrefix
                 , "01"
                 , getImplFunc
-                , addrTemplate
+                , "localhost"
                 , portSrvA);
 
-            ServerB.Init(RootCdPath
+            ServerB.Init(RootProgDataPath
                 , testFolderPrefix
                 , "02"
                 , getImplFunc
-                , addrTemplate
+                , "localhost"
                 , portSrvB);
 
             ServerAddrA = $"localhost:{portSrvA}";
             ServerAddrB = $"localhost:{portSrvB}";
 
             var settClient = new Mock<IFileTransferSettingsClient>();
-            settClient.Setup(state => state.ProgramDataTmpCompresPath).Returns($@"{RootCdPath}\{testFolderPrefix}Client\CompressTmp");
-            settClient.Setup(state => state.ProgramDataTmpTransferPath).Returns($@"{RootCdPath}\{testFolderPrefix}Client\TransitTmp");
+            ClientPath = $@"{RootProgDataPath}\{testFolderPrefix}Client";
+            settClient.Setup(state => state.ProgramDataTmpCompresPath ).Returns($@"{ClientPath}\CompressTmp");
+            settClient.Setup(state => state.ProgramDataTmpTransferPath).Returns($@"{ClientPath}\TransitTmp");
             settClient.Setup(state => state.IsLoaded).Returns(true);
 
             SettClient = settClient.Object;

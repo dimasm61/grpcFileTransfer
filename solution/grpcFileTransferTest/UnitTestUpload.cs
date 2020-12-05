@@ -11,9 +11,8 @@ namespace grpcFileTransferTest
     {
         public UnitTestUpload()
         {
-            TestContoller.Init(
+            TestControllerItem.Init(
                 testFolderPrefix: "TestUpload1"
-                , addrTemplate: "localhost:{}"
                 , portSrvA: 2236
                 , portSrvB: 2237
                 , getImplFunc: (sett) =>
@@ -31,8 +30,8 @@ namespace grpcFileTransferTest
         {
             var client = new Client2::grpcFileTransfer.Client.FileTransferClient();
 
-            var srvAddr1 = TestContoller.ServerAddrA;
-            var srvAddr2 = TestContoller.ServerAddrB;
+            var srvAddr1 = TestControllerItem.ServerAddrA;
+            var srvAddr2 = TestControllerItem.ServerAddrB;
 
             var sourceDirRelativePath = "Releases";
 
@@ -67,8 +66,8 @@ namespace grpcFileTransferTest
         {
             var client = new Client2::grpcFileTransfer.Client.FileTransferClient();
 
-            var srvAddr1 = TestContoller.ServerAddrA;
-            var srvAddr2 = TestContoller.ServerAddrB;
+            var srvAddr1 = TestControllerItem.ServerAddrA;
+            var srvAddr2 = TestControllerItem.ServerAddrB;
 
             var sourceDirRelativePath = "Releases";
 

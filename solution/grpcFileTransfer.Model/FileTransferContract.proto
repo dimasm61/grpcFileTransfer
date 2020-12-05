@@ -3,18 +3,93 @@
 option csharp_namespace = "grpcFileTransfer.Model";
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
 
 package proto;
 
+
 message FileDownloadRequest{
-    string fileName = 1;
+
+    // unique number for identify file download session
+    int32 sessionKey = 1;
+
+    enum FileDownloadRequestTypeEnum {
+        StartSessionMsg = 0;
+        ContinueSessionMsg = 1;
+    }
+
+    FileDownloadRequestTypeEnum RequestType = 2;
+
+    message StartSessionItem{
+        // file path which need download
+        string relativeFilePath = 1;
+    }
+
+    message ContinueSessionItem{
+        // file part num from with continue download
+        int32 filePartNum = 1;
+    }
+
+    StartSessionItem startSession = 3;
+
+    ContinueSessionItem continueSession = 4;
+
 }
 
+
+// response stream message
 message FileDownloadResponse{
-    int64 fileLen = 1;
-    int32 partNum = 2;
-    int32 partLen = 3;
-    bytes data = 4;
+
+    int32 sessionKey = 1;
+
+    enum FileDownloadResponseType
+    {
+        // a responce packet when session key already exists in server queue and client should be generate a new
+        BadSessionKeyMsg = 0;
+        // if SessionKey is accepted, FileInfo is a first stream message with total file size and parts count
+        FileInfoMsg = 1;
+        // a message is sended while file preparing - compressing or buffering
+        PreparingMsg = 2;
+        // message with part of file data
+        DataPartMsg = 3;
+        // final message
+        CompletedMsg = 4;
+    }
+
+    FileDownloadResponseType MsgType = 2;
+
+    message FileInfoItem{
+        int64 fileLen = 1;
+        int32 filePartMaxLen = 2;
+        int32 filePartCount = 3;
+        bytes fileCheckSum = 4;
+    }
+
+    message DataPartItem{
+        int32 filePartNum = 1;
+        int32 filePartLen = 2;
+        bytes filePartCheckSum = 3;
+        bytes filePartData = 4;
+    }
+
+    FileInfoItem fileInfo = 3;
+
+    DataPartItem dataPart = 4;
+
+}
+
+message FileDownloadFinishRequest{
+
+    int32 sessionKey = 1;
+    
+    enum FileDownloadFinishRequestType{
+
+        // if file downloading successful
+        Commit = 0;
+
+        // if file downloading interrupted by client
+        Cancel = 1;
+    }
 }
 
 message FileUploadRequest{
@@ -39,6 +114,8 @@ message FileUploadResponse{
 service FileTransfer{
 
     rpc FileDownload(FileDownloadRequest) returns (stream FileDownloadResponse){}
+
+    rpc FileDownloadFinish(FileDownloadFinishRequest) returns(google.protobuf.Empty) {}
 
     rpc FileUpload(stream FileUploadPart) returns (FileUploadResponse){}
 
