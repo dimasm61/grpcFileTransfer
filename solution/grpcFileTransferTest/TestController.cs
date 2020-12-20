@@ -6,6 +6,7 @@ using grpcFileTransfer.Server;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -72,7 +73,23 @@ namespace grpcFileTransferTest
 
         public static void CreateTempFile(string fileFullPath, int fileSizeMb)
         {
+            new FileInfo(fileFullPath).Directory.Create();
 
+            var cn = 0;
+            var rnd = new Random(DateTime.Now.Second);
+            var buff = new byte[100];
+
+            using (var stream = File.OpenWrite(fileFullPath))
+            {
+                while (cn < fileSizeMb * 1024 * 1024)
+                {
+                    rnd.NextBytes(buff);
+
+                    stream.Write(buff, 0, buff.Length);
+                    cn += buff.Length;
+                }
+                stream.Close();
+            }
         }
     }
 }

@@ -7,6 +7,24 @@ import "google/protobuf/empty.proto";
 
 package proto;
 
+// // request for prepare file - compress and split to multi volume archive
+// // it need for big files of directories - 50...1000 Mb.
+// // compressing should begin  async
+// message FileDownloadPrepareRequest{
+//     int32 sessionKey = 1;
+//     string relativeFilePath = 2;
+//     bool needToCompress = 3;
+//     uint32 filePartSizeKb = 4;
+// }
+// 
+// // response says that session key is unique
+// // and requested file (or folder) exists and compression has started
+// message FileDownloadPrepareResponse{
+//     bool sessionKeyIsOk = 1;
+//     bool fileIsExitst = 2;
+//     bool filePreparationStarted = 3;
+//     string errMsg = 4;
+// }
 
 message FileDownloadRequest{
 
@@ -27,7 +45,7 @@ message FileDownloadRequest{
 
     message ContinueSessionItem{
         // file part num from with continue download
-        int32 filePartNum = 1;
+        uint32 filePartNum = 1;
     }
 
     StartSessionItem startSession = 3;
@@ -44,37 +62,47 @@ message FileDownloadResponse{
 
     enum FileDownloadResponseType
     {
+        ErrorMsg = 0;
+
         // a responce packet when session key already exists in server queue and client should be generate a new
-        BadSessionKeyMsg = 0;
+        BadSessionKeyMsg = 1;
+        //
+        FileNotExists = 2;
         // if SessionKey is accepted, FileInfo is a first stream message with total file size and parts count
-        FileInfoMsg = 1;
+        FileInfoMsg = 3;
         // a message is sended while file preparing - compressing or buffering
-        PreparingMsg = 2;
+        PreparingMsg = 4;
         // message with part of file data
-        DataPartMsg = 3;
+        DataPartMsg = 5;
         // final message
-        CompletedMsg = 4;
+        CompletedMsg = 6;
     }
 
     FileDownloadResponseType MsgType = 2;
 
     message FileInfoItem{
-        int64 fileLen = 1;
-        int32 filePartMaxLen = 2;
-        int32 filePartCount = 3;
+        uint64 fileLen = 1;
+        uint32 filePartMaxLen = 2;
+        uint32 filePartCount = 3;
         bytes fileCheckSum = 4;
     }
 
     message DataPartItem{
-        int32 filePartNum = 1;
-        int32 filePartLen = 2;
+        uint32 filePartNum = 1;
+        uint32 filePartLen = 2;
         bytes filePartCheckSum = 3;
         bytes filePartData = 4;
     }
 
-    FileInfoItem fileInfo = 3;
+    message DataErrorItem{
+        string errorMessage = 1;
+    }
 
-    DataPartItem dataPart = 4;
+    FileInfoItem fileInfoData = 3;
+
+    DataPartItem partData = 4;
+
+    DataErrorItem errorData = 5;
 
 }
 
@@ -91,19 +119,24 @@ message FileDownloadFinishRequest{
         Cancel = 1;
     }
 }
+message FileDownloadFinishResponse {
+    bool Result = 1;
+
+}
+
 
 message FileUploadRequest{
     string fileName = 1;
-    int32 partCount = 2;
-    int32 partNum = 3;
+    uint32 partCount = 2;
+    uint32 partNum = 3;
     bytes data = 4;
 }
 
 message FileUploadPart{
     string fileName = 1;
     int64 fileLen = 2;
-    int32 partCount = 3;
-    int32 partNum = 4;
+    uint32 partCount = 3;
+    uint32 partNum = 4;
     bytes data = 5;
 }
 
@@ -113,9 +146,11 @@ message FileUploadResponse{
 
 service FileTransfer{
 
+    //rpc FileDownloadPrepare(FileDownloadPrepareRequest) returns (FileDownloadPrepareResponse){}
+
     rpc FileDownload(FileDownloadRequest) returns (stream FileDownloadResponse){}
 
-    rpc FileDownloadFinish(FileDownloadFinishRequest) returns(google.protobuf.Empty) {}
+    rpc FileDownloadFinish(FileDownloadFinishRequest) returns(FileDownloadFinishResponse) {}
 
     rpc FileUpload(stream FileUploadPart) returns (FileUploadResponse){}
 

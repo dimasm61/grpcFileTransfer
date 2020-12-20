@@ -15,10 +15,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Threading" Version="16.8.55" />
+    <PackageReference Include="Serilog" Version="2.10.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="FileTransferContract.proto" GrpcServices="None" />
+    <Protobuf Include="FileTransferContract.proto" GrpcServices="None" Access="Internal" ProtoCompile="false" />
   </ItemGroup>
 
 </Project>
