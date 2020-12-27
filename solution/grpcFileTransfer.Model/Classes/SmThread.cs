@@ -127,7 +127,11 @@ namespace grpcFileTransfer.Model.Classes
                 _cts = new CancellationTokenSource();
                 _ct = _cts.Token;
 
-                WorkTask = _taskFactory.StartNew(async () => await WorkLoopAsync());
+                // WorkTask = _taskFactory.StartNew(async () => await WorkLoopAsync());
+                WorkTask = _taskFactory.StartNew(() =>
+                {
+                    WorkLoopAsync().Wait();
+                });
 
                 //AfterStartWrapper();
             }

@@ -1,4 +1,5 @@
-﻿using grpcFileTransfer.Server.Components;
+﻿using grpcFileTransfer.Model.Classes;
+using grpcFileTransfer.Server.Components;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,9 +30,81 @@ namespace grpcFileTransferTest
             int i = BitConverter.ToInt32(g);
         }
 
+        internal class TestTh : SmThread
+        {
+            public int Counter = 0;
+            ITestOutputHelper _output;
+            public TestTh(ITestOutputHelper output) : base(1) { _output = output; }
+
+            protected override Task DoStepAsync(CancellationToken ct)
+            {
+                Counter++;
+                _output.WriteLine($"Work step: {Counter}");
+                return Task.CompletedTask;
+            }
+
+            public override void Start(int delaySec = 0)
+            {
+                _output.WriteLine($"Call Start");
+                base.Start(delaySec);
+            }
+            public override Task StartAsync(int delaySec = 0)
+            {
+                _output.WriteLine($"Call StartAsync");
+                return base.StartAsync(delaySec);
+            }
+            public override void Stop()
+            {
+                _output.WriteLine($"Call Stop");
+                base.Stop();
+            }
+            public override Task StopAsync()
+            {
+                _output.WriteLine($"Call StopAsync");
+                return base.StopAsync();
+            }
+        }
 
         [Fact]
-        public async Task TestBuffer()
+        public void SmThreadTest1()
+        {
+            var th = new TestTh(output);
+
+            output.WriteLine($"Status: {th.TaskStatus}");
+            th.Start();
+            output.WriteLine($"Status: {th.TaskStatus}");
+            while (th.Counter < 5)
+            {
+                Thread.Sleep(200);
+                output.WriteLine($"Status: {th.TaskStatus}");
+            }
+            output.WriteLine($"Status: {th.TaskStatus}");
+
+            th.Stop();
+            output.WriteLine($"Status: {th.TaskStatus}");
+        }
+        [Fact]
+        public async Task SmThreadTest2()
+        {
+            var th = new TestTh(output);
+
+            output.WriteLine($"Status: {th.TaskStatus}");
+            await th.StartAsync();
+            output.WriteLine($"Status: {th.TaskStatus}");
+            while (th.Counter < 5)
+            {
+                Thread.Sleep(200);
+                output.WriteLine($"Status: {th.TaskStatus}");
+            }
+            output.WriteLine($"Status: {th.TaskStatus}");
+
+            await th.StopAsync();
+            output.WriteLine($"Status: {th.TaskStatus}");
+        }
+
+
+        [Fact]
+        public async Task TestBufferAsync()
         {
             var buffCount = 10;
             var buffSize = 100 * 1024;
@@ -63,9 +136,7 @@ namespace grpcFileTransferTest
 
             Assert.Equal(0, cn);
 
-
-
-
+            // sending 'thread'
             var taskSend = Task.Run(async () =>
             {
                 try
@@ -128,7 +199,7 @@ namespace grpcFileTransferTest
 
             Assert.True(b);
 
-            taskSend.Wait();
+            await taskSend;
 
             await stream.DisposeAsync();
 
